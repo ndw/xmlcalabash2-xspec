@@ -7,3 +7,11 @@ This repository contains an
 step that can run [XSpec](https://github.com/xspec/xspec) tests.
 
 XML Calabash 2.x is still pre-alpha. You aren’t expected to be able to use this.
+
+## TODO
+
+* Work out a proper error code for failure if `assert-valid` is true.
+* Write unit tests for the rest of the Schematron scenarios.
+* See if I can implement Schematron Quick Fixes.
+* Implement the coverage option.
+
