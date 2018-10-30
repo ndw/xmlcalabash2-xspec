@@ -1,0 +1,43 @@
+<t:test xmlns:t="http://xproc.org/ns/testsuite/3.0" expected="pass">
+
+<t:info>
+  <t:title>Test XSpec JUnit output</t:title>
+  <t:revision-history>
+    <t:revision>
+      <t:date>2018-10-29</t:date>
+      <t:author initials="ndw">
+        <t:name>Norman Walsh</t:name>
+      </t:author>
+      <t:description xmlns="http://www.w3.org/1999/xhtml">
+        <p>Initial checkin.</p>
+      </t:description>
+    </t:revision>
+  </t:revision-history>
+</t:info>
+
+<t:description xmlns="http://www.w3.org/1999/xhtml">
+  <p>Test that <code>cx:xspec</code> can return JUnit XML.</p>
+</t:description>
+
+<t:option name="source-uri" select="'../documents/xquery-tutorial.xq'"/>
+<t:option name="xspec-uri" select="'../documents/xquery-tutorial.xspec'"/>
+<t:option name="report-format" select="'junit'"/>
+
+<t:pipeline src="../pipelines/xquery-tutorial.xpl"/>
+
+<t:schematron>
+  <s:schema xmlns:s="http://purl.oclc.org/dsdl/schematron"
+            xmlns:p="http://www.w3.org/ns/xproc"
+            xmlns:rng="http://relaxng.org/ns/structure/1.0">
+     <s:pattern>
+       <s:rule context="/">
+         <s:assert test="testsuites">Pipeline did not generate an testsuites</s:assert>
+       </s:rule>
+       <s:rule context="testsuites">
+         <s:assert test="testsuite">
+                   >Pipeline did not generate any testsuite elements</s:assert>
+       </s:rule>
+     </s:pattern>
+  </s:schema>
+</t:schematron>
+</t:test>

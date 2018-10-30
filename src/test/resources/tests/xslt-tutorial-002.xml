@@ -1,0 +1,30 @@
+<t:test xmlns:t="http://xproc.org/ns/testsuite/3.0"
+        xmlns:err="http://www.w3.org/ns/xproc-error"
+        expected="fail" code="err:XC0999">
+
+<t:info>
+  <t:title>Test XSpec assert-valid on XSLT</t:title>
+  <t:revision-history>
+    <t:revision>
+      <t:date>2018-10-29</t:date>
+      <t:author initials="ndw">
+        <t:name>Norman Walsh</t:name>
+      </t:author>
+      <t:description xmlns="http://www.w3.org/1999/xhtml">
+        <p>Initial checkin.</p>
+      </t:description>
+    </t:revision>
+  </t:revision-history>
+</t:info>
+
+<t:description xmlns="http://www.w3.org/1999/xhtml">
+  <p>Test that <code>cx:xspec</code> can test XSLT and detects errors
+  if <code>assert-valid</code> is true.</p>
+</t:description>
+
+<t:option name="source-uri" select="'../documents/escape-for-regex.xslt'"/>
+<t:option name="xspec-uri" select="'../documents/escape-for-regex.xspec'"/>
+<t:option name="assert-valid" select="true()"/>
+
+<t:pipeline src="../pipelines/xslt-tutorial.xpl"/>
+</t:test>

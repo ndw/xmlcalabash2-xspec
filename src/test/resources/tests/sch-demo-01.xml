@@ -1,0 +1,46 @@
+<t:test xmlns:t="http://xproc.org/ns/testsuite/3.0" expected="pass">
+
+<t:info>
+  <t:title>Test XSpec on Schematron</t:title>
+  <t:revision-history>
+    <t:revision>
+      <t:date>2018-10-29</t:date>
+      <t:author initials="ndw">
+        <t:name>Norman Walsh</t:name>
+      </t:author>
+      <t:description xmlns="http://www.w3.org/1999/xhtml">
+        <p>Initial checkin.</p>
+      </t:description>
+    </t:revision>
+  </t:revision-history>
+</t:info>
+
+<t:description xmlns="http://www.w3.org/1999/xhtml">
+  <p>Test that <code>cx:xspec</code> can test Schematron.</p>
+</t:description>
+
+<t:option name="source-uri" select="'../documents/schematron/demo-01.sch'"/>
+<t:option name="xspec-uri" select="'../documents/schematron/demo-01.xspec'"/>
+
+<t:pipeline src="../pipelines/schematron-tutorial.xpl"/>
+
+<t:schematron>
+  <s:schema xmlns:s="http://purl.oclc.org/dsdl/schematron"
+            xmlns:p="http://www.w3.org/ns/xproc"
+            xmlns:rng="http://relaxng.org/ns/structure/1.0">
+     <s:ns prefix="x" uri="http://www.jenitennison.com/xslt/xspec"/>
+     <s:pattern>
+       <s:rule context="/">
+         <s:assert test="x:report">Pipeline did not generate an x:report</s:assert>
+         <s:assert test="count(//x:test) = 3">Pipeline did not generate 3 tests</s:assert>
+         <s:assert test="count(//x:test[@successful='false']) = 0"
+                   >Pipeline did not generate 3 passing test</s:assert>
+       </s:rule>
+       <s:rule context="x:report">
+         <s:assert test="x:scenario[x:label = 'demo-01']"
+                   >Pipeline did not generate the ‘demo-01’ scenario</s:assert>
+       </s:rule>
+     </s:pattern>
+  </s:schema>
+</t:schematron>
+</t:test>

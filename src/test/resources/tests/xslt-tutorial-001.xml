@@ -1,0 +1,52 @@
+<t:test xmlns:t="http://xproc.org/ns/testsuite/3.0" expected="pass">
+
+<t:info>
+  <t:title>Test XSpec on XSLT</t:title>
+  <t:revision-history>
+    <t:revision>
+      <t:date>2018-10-29</t:date>
+      <t:author initials="ndw">
+        <t:name>Norman Walsh</t:name>
+      </t:author>
+      <t:description xmlns="http://www.w3.org/1999/xhtml">
+        <p>Initial checkin.</p>
+      </t:description>
+    </t:revision>
+  </t:revision-history>
+</t:info>
+
+<t:description xmlns="http://www.w3.org/1999/xhtml">
+  <p>Test that <code>cx:xspec</code> can test XSLT.</p>
+</t:description>
+
+<t:option name="source-uri" select="'../documents/escape-for-regex.xslt'"/>
+<t:option name="xspec-uri" select="'../documents/escape-for-regex.xspec'"/>
+
+<t:pipeline src="../pipelines/xslt-tutorial.xpl"/>
+
+<t:schematron>
+  <s:schema xmlns:s="http://purl.oclc.org/dsdl/schematron"
+            xmlns:p="http://www.w3.org/ns/xproc"
+            xmlns:rng="http://relaxng.org/ns/structure/1.0">
+     <s:ns prefix="x" uri="http://www.jenitennison.com/xslt/xspec"/>
+     <s:pattern>
+       <s:rule context="/">
+         <s:assert test="x:report">Pipeline did not generate an x:report</s:assert>
+         <s:assert test="count(//x:test) = 6">Pipeline did not generate 6 tests</s:assert>
+         <s:assert test="count(//x:test[@successful='false']) = 1"
+                   >Pipeline did not generate 1 failing test</s:assert>
+       </s:rule>
+       <s:rule context="x:report">
+         <s:assert test="x:scenario[x:label = 'No escaping']"
+                   >Pipeline did not generate the ‘No escaping’ scenario</s:assert>
+         <s:assert test="x:scenario[x:label = 'Test simple patterns']"
+                   >Pipeline did not generate the ‘Test simple patterns’ scenario</s:assert>
+       </s:rule>
+       <s:rule context="x:test[@successful='false']">
+         <s:assert test="x:label='Strings should be escaped and status attributes should be added'"
+                   >Pipeline generated the wrong failing test.</s:assert>
+       </s:rule>
+     </s:pattern>
+  </s:schema>
+</t:schematron>
+</t:test>
